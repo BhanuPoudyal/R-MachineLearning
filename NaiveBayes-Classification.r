@@ -1,10 +1,12 @@
 sms_data <- read.csv("sms_spam_short.csv", stringsAsFactors=FALSE)
-sms_data$type <- as.factor(sms_data$type) str(sms_data)
+sms_data$type <- as.factor(sms_data$type) 
+str(sms_data)
 summary(sms_data)
 
 head(sms_data)
 
 #Data Cleansing
+#install.packages("tm")
 
 library(tm)
 #create a corpus for the message
@@ -24,21 +26,27 @@ refined_corpus <- tm_map(refined_corpus, removeWords, stopwords())
 #remove specific words
 refined_corpus <- tm_map(refined_corpus, removeWords, c("else","the","are","for","has","they","as","a","his","on","when","is","in","already"))
 
+
 #look at the processed text
 inspect(refined_corpus[1:5])
 
  #create a document-term sparse matrix
-dtm <- DocumentTermMatrix(refined_corpus) dtm
+dtm <- DocumentTermMatrix(refined_corpus) 
+
+dtm
 
 dim(dtm)
 
 #Remove all words who has occured less than 10 times to create a new DTM
-filtered_dtm <- DocumentTermMatrix(refined_corpus, list(dictionary=findFreqTerms(dtm, 10)) dim(filtered_dtm)
+filtered_dtm <- DocumentTermMatrix(refined_corpus, list(dictionary=findFreqTerms(dtm, 10))) 
 
- #inspect the contents be converting it into a matrix and transposing it
-t(inspect(filtered_dtm)[1:25,1:10]
+dim(filtered_dtm)
+
+#inspect the contents be converting it into a matrix and transposing it
+inspect(filtered_dtm)[1:25,1:10]
 
 #Exploratory Data Analysis
+#install.packages("wordcloud")
 library(wordcloud)
 
 pal <- brewer.pal(9,"Dark2")
